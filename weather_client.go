@@ -18,10 +18,20 @@ type TemperatureResponse struct {
 
 // GetWeatherData fetches the temperature reading for a given weather station ID over RPC
 func GetWeatherData(client *rpc.Client, id int) (float64, error) {
-	// TODO: Your code here
+	request := TemperatureRequest{
+		StationID: string(id),
+	}
+	var response TemperatureResponse
 
-	return math.NaN(), nil
+	// Make the RPC call to fetch the temperature data
+	err := client.Call("WeatherService.GetTemperature", request, &response)
+	if err != nil {
+		return math.NaN(), err
+	}
+
+	return response.Temperature, nil
 }
+
 
 // Test GetWeatherData implementation
 func main() {
