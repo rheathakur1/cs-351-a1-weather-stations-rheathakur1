@@ -55,7 +55,7 @@ func channelAggregator(
 			return
 		}
 	}
-	}
+
 
 	mode := math.NaN()
 	maxCount := 0
@@ -74,3 +74,5 @@ func channelAggregator(
 
 }
 }
+}
+
