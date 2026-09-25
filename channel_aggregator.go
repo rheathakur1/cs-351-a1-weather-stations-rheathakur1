@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/rpc"
+	"math"
+	"time"
 )
 
 // Channel-based aggregator that reports the global mode temperature periodically.
@@ -54,5 +56,20 @@ func channelAggregator(
 		}
 	}
 	}
+
+	mode := math.NaN()
+	maxCount := 0
+
+	for temp, count := range counts {
+		if count > maxCount || (count == maxCount && temp < mode) {
+			mode = temp
+			maxCount = count
+		}
+	}
+
+	select {
+	case out <- [2]float64{mode, float64(maxCount)}:
+	case <-quit:
+    	return
 
 }
