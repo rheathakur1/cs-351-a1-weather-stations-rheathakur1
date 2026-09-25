@@ -4,6 +4,7 @@ import (
 	"log"
 	"math"
 	"net/rpc"
+	"strconv"
 )
 
 // TemperatureRequest represents an RPC request with a station ID
@@ -19,7 +20,7 @@ type TemperatureResponse struct {
 // GetWeatherData fetches the temperature reading for a given weather station ID over RPC
 func GetWeatherData(client *rpc.Client, id int) (float64, error) {
 	request := TemperatureRequest{
-		StationID: string(id),
+		StationID: strconv.Itoa(id),
 	}
 	var response TemperatureResponse
 
