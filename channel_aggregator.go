@@ -19,5 +19,40 @@ func channelAggregator(
 	quit chan struct{},
 	client *rpc.Client,
 ) {
-	// TODO: Your code here.
+	period := time.Duration(averagePeriod * float64(time.Second))
+
+	for {
+		responses := make(chan float64, k)
+	
+		for i := 0; i < k; i++ {
+			go func(stationID int) {
+				temp, err := GetWeatherData(client, stationID)
+					
+				if err == nil {
+					responses <- temp
+				}
+			}(i + 1) 
+	}
+
+	counts := make(map[float64]int)
+
+	timer := time.NewTimer(period)
+
+	collecting := true
+
+	for collecting {
+		select {
+		case temp := <-responses:
+			counts[temp]++
+
+		case <-timer.C:
+			collecting = false
+
+		case <-quit:
+			timer.Stop()
+			return
+		}
+	}
+	}
+
 }
