@@ -33,7 +33,7 @@ func channelAggregator(
 				if err == nil {
 					responses <- temp
 				}
-			}(i + 1) 
+			}(i) 
 	}
 
 	counts := make(map[float64]int)
