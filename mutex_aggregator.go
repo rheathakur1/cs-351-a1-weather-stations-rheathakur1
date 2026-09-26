@@ -38,7 +38,7 @@ func mutexAggregator(
 					counts[temp]++
 					mu.Unlock()
 				}
-			}(i + 1) // Station IDs are 1-indexed
+			}(i) // Station IDs are 1-indexed
 		}
 
 		select {
